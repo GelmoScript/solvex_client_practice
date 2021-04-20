@@ -13,32 +13,41 @@
     <title>Popip</title>
   </head>
   <body>
-    <section id="form" class="addItem">
-      <h5 class="sectionTitle">Registrar nuevo item</h5>
-      <div class="form">
-        <label> Nombre </label>
-        <input id="itemName" type="text" v-model="itemName" />
-        <label> Descripción </label>
-        <textarea id="itemDescription" v-model="itemDescription"></textarea>
-        <button id="addButton" type="button" @click.prevent="onFormSubmit">
-          Agregar Item
-        </button>
-      </div>
-    </section>
-    <section id="getItems">
-      <h5 class="sectionTitle">Cosas por hacer [{{itemsCount}}]:</h5>
-      <div id="itemList" class="items">
-        <template v-if="hasItems"> </template>
-        <template v-else>
-          <p>No tienes elementos agregados</p>
-        </template>
-      </div>
-    </section>
+    <div id="app">
+      <section id="form" class="addItem">
+        <h5 class="sectionTitle">Registrar nuevo item</h5>
+        <div class="form">
+          <label> Nombre </label>
+          <input id="itemName" type="text" v-model="itemName" />
+          <label> Descripción </label>
+          <textarea id="itemDescription" v-model="itemDescription"></textarea>
+          <button id="addButton" type="button" @click.prevent="onFormSubmit">
+            Agregar Item
+          </button>
+        </div>
+      </section>
+      <section id="getItems">
+        <h5 class="sectionTitle">Cosas por hacer [{{itemsCount}}]:</h5>
+        <div id="itemList" class="items">
+          <template v-if="hasItems">
+            <ul>
+              <li v-for="item in items" :key="item.Id">
+                <input type="checkbox" v-model="item.Checked" />
+                <label v-bind:class="{'item-checked': item.Checked}"
+                  >{{item.Name}} {{item.Description}}</label
+                >
+              </li>
+            </ul>
+          </template>
+          <template v-else>
+            <p>No tienes elementos agregados</p>
+          </template>
+        </div>
+      </section>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
-    <script src="src/js/form.js"></script>
-    <script src="src/js/itemList.js"></script>
-    <!-- <script type="module" src="src/js/index.js"></script> -->
-    <!-- <script type="module" src="src/js/modules/itemRender.js"></script> -->
-    <!-- <script type="module" src="src/js/modules/itemService.js" ></script> -->
+    <script type="module" src="src/js/modules/itemService.js"></script>
+    <script type="module" src="src/js/index.js"></script>
   </body>
 </html>
