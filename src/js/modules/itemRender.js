@@ -1,5 +1,5 @@
 const loadItems = (items) => {
-  const itemList = document.getElementById('itemList');
+  let itemList = document.getElementById('itemList');
   itemList.innerHTML = '';
   items.forEach((item) => {
     const todoItem = createItem(item);

@@ -24,4 +24,5 @@ class ItemService {
   }
 }
 
-export { ItemService };
+// export { ItemService };
+export default new ItemService();
