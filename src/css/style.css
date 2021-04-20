@@ -23,7 +23,7 @@ body {
   color: var(--primary);
 }
 
-.getItems {
+#getItems {
   float: left;
 }
 
