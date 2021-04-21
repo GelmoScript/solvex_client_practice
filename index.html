@@ -18,11 +18,14 @@
         <h5 class="sectionTitle">Registrar nuevo item</h5>
         <div class="form">
           <label> Nombre </label>
-          <input id="itemName" type="text" v-model="itemName" />
+          <input id="itemName" type="text" v-model.trim="itemName" />
           <label> Descripción </label>
           <textarea id="itemDescription" v-model="itemDescription"></textarea>
           <button id="addButton" type="button" @click.prevent="onFormSubmit">
             Agregar Item
+          </button>
+          <button v-if="readyToUpdate" id="addButton" type="button" @click.prevent="updateItem">
+            Actualizar Item
           </button>
         </div>
       </section>
@@ -33,9 +36,11 @@
             <ul>
               <li v-for="item in items" :key="item.Id">
                 <input type="checkbox" v-model="item.Checked" />
-                <label v-bind:class="{'item-checked': item.Checked}"
-                  >{{item.Name}} {{item.Description}}</label
+                <label @click="selectItem(item.Id)" v-bind:class="{'item-checked': item.Checked}"
                 >
+                  {{item.Name}}: {{item.Description}}</label
+                >
+                <button class="deleteButton" @click="deleteItem(item.Id)">x</button>
               </li>
             </ul>
           </template>
@@ -49,5 +54,6 @@
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <script type="module" src="src/js/modules/itemService.js"></script>
     <script type="module" src="src/js/index.js"></script>
+    </script>
   </body>
 </html>

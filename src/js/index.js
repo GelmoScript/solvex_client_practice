@@ -1,8 +1,9 @@
 import itemService from './modules/ItemService.js';
 
-let vApp = new Vue({
+new Vue({
   el: '#app',
   data: {
+    id: 0,
     itemName: '',
     itemDescription: '',
     items: []
@@ -13,33 +14,47 @@ let vApp = new Vue({
     },
     hasItems: function () {
       return this.items.length > 0;
+    },
+    readyToUpdate: function () {
+      return this.id !== 0;
     }
   },
+  mounted: async function () {
+    await this.refreshItems();
+  },
   methods: {
-    getAllItems: async function () {
-      const res = await fetch(this.apiUrl);
-      const { value } = await res.json();
-      return value;
+    refreshItems: async function () {
+      this.items = await itemService.getAll();
     },
-    createItems: async function ({ name, description }) {
-      if (!name) throw 'Name cannot be empty';
-      if (!description) throw 'Description cannot be empty';
-      const itemToAdd = { name, description };
-      await fetch(this.apiUrl, {
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json'
-        },
-        method: 'POST',
-        body: JSON.stringify(itemToAdd)
+    deleteItem: async function (id) {
+      await itemService.delete(id);
+      await this.refreshItems();
+    },
+    updateItem: async function () {
+      await itemService.update(this.id, {
+        name: this.itemName,
+        description: this.itemDescription
       });
+      await this.refreshItems();
+    },
+    selectItem: async function (id) {
+      const item = await itemService.getById(id);
+      const { Id, Name, Description } = item;
+      this.id = Id;
+      this.itemName = Name;
+      this.itemDescription = Description;
     },
     onFormSubmit: async function () {
       await itemService.create({
         name: this.itemName,
         description: this.itemDescription
       });
-      this.items = await itemService.getAll();
+      await this.refreshItems();
+      this.id = 0;
+    },
+    clear: function () {
+      this.itemName = '';
+      this.itemDescription = '';
     }
   }
 });
