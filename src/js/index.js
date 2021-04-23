@@ -10,7 +10,8 @@ new Vue({
   },
   computed: {
     itemsCount: function () {
-      return this.items.length;
+      const itemsUnchecked = this.items.filter((item) => !item.Checked);
+      return itemsUnchecked.length;
     },
     hasItems: function () {
       return this.items.length > 0;
@@ -23,6 +24,13 @@ new Vue({
     await this.refreshItems();
   },
   methods: {
+    changeSelection: async function (id, e) {
+      console.log(id);
+      const item = await itemService.getById(id);
+      console.log(item);
+      item.Checked = e.target.checked;
+      await itemService.update(id, item);
+    },
     refreshItems: async function () {
       this.items = await itemService.getAll();
     },

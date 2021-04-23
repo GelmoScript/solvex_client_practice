@@ -35,7 +35,7 @@
           <template v-if="hasItems">
             <ul>
               <li v-for="item in items" :key="item.Id">
-                <input type="checkbox" v-model="item.Checked" />
+                <input @click="changeSelection(item.Id, $event)" type="checkbox" v-model="item.Checked" />
                 <label @click="selectItem(item.Id)" v-bind:class="{'item-checked': item.Checked}"
                 >
                   {{item.Name}}: {{item.Description}}</label
